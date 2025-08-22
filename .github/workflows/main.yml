@@ -1,0 +1,27 @@
+name: Deploy to Cloudflare Pages
+
+# Run this workflow every time a change is pushed to the 'main' branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Use a standard Linux environment
+    name: Build and Deploy
+    steps:
+      - name: Checkout
+        # This action checks out your repository code, so the workflow can access it
+        uses: actions/checkout@v4
+
+      - name: Publish to Cloudflare Pages
+        # This action is the official one for deploying to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: 'my-cloudflare-site' # The name of your Cloudflare Pages project
+          directory: '.' # The directory where your website files are located
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }} # Optional: for better integration
+
